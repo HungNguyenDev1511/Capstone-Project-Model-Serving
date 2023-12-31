@@ -16,7 +16,7 @@ Pay attention that `minikf` uses Kubernetes version 1.16, which is not suitable 
 
 Clone the repository. I did this step already for you so you don't have to redo this. I just want to show you what I did.
 ```shell
-RELEASE=release-0.8
+RELEASE=release-0.9
 git clone -b $RELEASE --depth 1 --single-branch https://github.com/kserve/modelmesh-serving.git
 cd modelmesh-serving
 ```
@@ -35,7 +35,7 @@ After several minutes, you should see the following output
 
 Port-forward `minio` service so you can access it locally
 ```shell
-kubectl port-forward svc/minio -p 9000:9000 -n modelmesh-serving
+kubectl port-forward svc/minio 9000:9000 -n modelmesh-serving
 ```
 
 Assume that your `minio` pod is `minio-5f894ffd9-v27zp`, use the following commands to obtain `MINIO_ACCESS_KEY` and `MINIO_SECRET_KEY` for signing in `minio` and uploading your objects.
