@@ -9,9 +9,9 @@ COPY --chown=${USER} ./model.py /opt/
 ENV PYTHONPATH=/opt/
 WORKDIR /opt/
 
-# environment variables to be compatible with ModelMesh Serving
-#  these can also be set in the ServingRuntime, but this is recommended for
-#  consistency when building and testing
+# # environment variables to be compatible with ModelMesh Serving
+# #  these can also be set in the ServingRuntime, but this is recommended for
+# #  consistency when building and testing
 ENV MLSERVER_MODELS_DIR=/models/_mlserver_models/ \
     MLSERVER_GRPC_PORT=8001 \
     MLSERVER_HTTP_PORT=8002 \
@@ -21,9 +21,22 @@ ENV MLSERVER_MODELS_DIR=/models/_mlserver_models/ \
     MLSERVER_MODEL_PARALLEL_WORKERS=0 \
     MLSERVER_MODEL_NAME=dummy-model
 
-# With this setting, the implementation field is not required in the model
-# settings which eases integration by allowing the built-in adapter to generate
-# a basic model settings file
-ENV MLSERVER_MODEL_IMPLEMENTATION=model.CustomMLModel
+RUN mkdir -p /models/_triton_models \ 
+    chmod 777 /models/_triton_models \ 
+    exec tritonserver
+          "--model-repository=/models/_triton_models"
+          "--model-control-mode=explicit"
+          "--strict-model-config=false"
+          "--strict-readiness=false"
+          "--allow-http=true"
+          "--allow-sagemaker=false"
+          '\
+
+
+
+# # With this setting, the implementation field is not required in the model
+# # settings which eases integration by allowing the built-in adapter to generate
+# # a basic model settings file
+# ENV MLSERVER_MODEL_IMPLEMENTATION=model.CustomMLModel
 
 CMD mlserver start $MLSERVER_MODELS_DIR

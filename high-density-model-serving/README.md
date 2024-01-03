@@ -35,7 +35,7 @@ After several minutes, you should see the following output
 
 Port-forward `minio` service so you can access it locally
 ```shell
-kubectl port-forward svc/minio 9000:9000 -n modelmesh-serving
+kubectl port-forward svc/minio -p 9000:9000 -n modelmesh-serving
 ```
 
 Assume that your `minio` pod is `minio-5f894ffd9-v27zp`, use the following commands to obtain `MINIO_ACCESS_KEY` and `MINIO_SECRET_KEY` for signing in `minio` and uploading your objects.
