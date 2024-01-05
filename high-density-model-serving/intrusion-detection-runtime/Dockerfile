@@ -38,9 +38,9 @@ RUN chmod 777 /models/_triton_models
 ARG model-repository=/models/_triton_models \
     model-control-mode=explicit \ 
     strict-model-config=false \ 
-    trict-readiness=false 
+    trict-readiness=false \ 
     allow-http=true \
-    allow-sagemaker=false"
+    allow-sagemaker=false
 
 
 # # With this setting, the implementation field is not required in the model

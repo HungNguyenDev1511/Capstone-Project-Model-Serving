@@ -19,6 +19,11 @@ metadata:
     name: modelmesh-serving-triton-2.x-SR
   annotations:
     maxLoadingConcurrency: "2"
+    serving.kserve.io/autoscalerClass: hpa
+    serving.kserve.io/targetUtilizationPercentage: "75"
+    serving.kserve.io/metrics: "cpu"
+    serving.kserve.io/min-scale: "2"
+    serving.kserve.io/max-scale: "3"
 spec:
   supportedModelFormats:
     - name: keras

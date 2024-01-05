@@ -41,9 +41,9 @@ kubectl port-forward svc/minio -p 9000:9000 -n modelmesh-serving
 Assume that your `minio` pod is `minio-5f894ffd9-v27zp`, use the following commands to obtain `MINIO_ACCESS_KEY` and `MINIO_SECRET_KEY` for signing in `minio` and uploading your objects.
 
 ```shell
-kubectl get po minio-5f894ffd9-v27zp -o json | jq -r '.spec.containers[0].env[] | select(.name == "MINIO_ACCESS_KEY") | .value'
+kubectl get po minio-676b8dcf45-nw2zw -o json | jq -r '.spec.containers[0].env[] | select(.name == "MINIO_ACCESS_KEY") | .value'
 
-kubectl get po minio-5f894ffd9-v27zp -o json | jq -r '.spec.containers[0].env[] | select(.name == "MINIO_SECRET_KEY") | .value'
+kubectl get po minio-676b8dcf45-nw2zw -o json | jq -r '.spec.containers[0].env[] | select(.name == "MINIO_SECRET_KEY") | .value'
 ```
 
 You can see that in my case, `MINIO_ACCESS_KEY` is `AKIAIOSFODNN7EXAMPLE`, and `MINIO_SECRET_KEY` is `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`.
@@ -51,7 +51,7 @@ You can see that in my case, `MINIO_ACCESS_KEY` is `AKIAIOSFODNN7EXAMPLE`, and `
 
 
 Run the following command to have a quickstart model
-```shell
+```shellk get p
 kubectl apply -f deployments/quickstart.yaml
 ```
 
