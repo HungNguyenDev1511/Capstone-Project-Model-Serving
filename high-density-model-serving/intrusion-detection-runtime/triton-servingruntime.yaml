@@ -26,25 +26,9 @@ metadata:
     serving.kserve.io/max-scale: "3"
 spec:
   supportedModelFormats:
-    - name: keras
-      version: "2" # 2.6.0
+    - name: vae
+      version: "1"
       autoSelect: true
-    - name: onnx
-      version: "1" # 1.5.3
-      autoSelect: true
-    - name: pytorch
-      version: "1" # 1.8.0a0+17f8c32
-      autoSelect: true
-    - name: tensorflow
-      version: "1" # 1.15.4
-      autoSelect: true
-    - name: tensorflow
-      version: "2" # 2.3.1
-      autoSelect: true
-    - name: tensorrt
-      version: "7" # 7.2.1
-      autoSelect: true
-
   protocolVersions:
     - grpc-v2
   multiModel: true
@@ -96,5 +80,5 @@ spec:
   builtInAdapter:
     serverType: triton
     runtimeManagementPort: 8001
-    memBufferBytes: 134217728
+    memBufferBytes: -134217728
     modelLoadingTimeoutMillis: 90000
