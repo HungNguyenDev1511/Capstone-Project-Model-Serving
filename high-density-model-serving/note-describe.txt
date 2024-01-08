@@ -1,0 +1,235 @@
+Name:             modelmesh-serving-triton-2.x-588bfcf567-kbrq4
+Namespace:        modelmesh-serving
+Priority:         0
+Service Account:  default
+Node:             minikf/10.10.10.10
+Start Time:       Sun, 07 Jan 2024 12:41:49 +0700
+Labels:           app.kubernetes.io/instance=modelmesh-controller
+                  app.kubernetes.io/managed-by=modelmesh-controller
+                  app.kubernetes.io/name=modelmesh-controller
+                  modelmesh-service=modelmesh-serving
+                  name=modelmesh-serving-triton-2.x
+                  pod-template-hash=588bfcf567
+Annotations:      prometheus.io/path: /metrics
+                  prometheus.io/port: 2112
+                  prometheus.io/scheme: https
+                  prometheus.io/scrape: true
+Status:           Running
+IP:               172.17.0.73
+IPs:
+  IP:           172.17.0.73
+Controlled By:  ReplicaSet/modelmesh-serving-triton-2.x-588bfcf567
+Init Containers:
+  startup-lock-init-container:
+    Container ID:  docker://2b355db1d8b00e377191f85ac081bea80828785da4a345a05ee785f2e0d571da
+    Image:         gcr.io/arrikto-public/startup-lock-init@sha256:0fbe996a2f6b380d7c566ba16255ec034faec983c2661da778fe09b3e744ad21
+    Image ID:      docker-pullable://gcr.io/arrikto-public/startup-lock-init@sha256:0fbe996a2f6b380d7c566ba16255ec034faec983c2661da778fe09b3e744ad21
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      --host
+      $(HOST_IP)
+      --port
+      10101
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Sun, 07 Jan 2024 12:41:50 +0700
+      Finished:     Sun, 07 Jan 2024 12:41:50 +0700
+    Ready:          True
+    Restart Count:  0
+    Requests:
+      cpu:     1m
+      memory:  1M
+    Environment:
+      HOST_IP:   (v1:status.hostIP)
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-bwxwz (ro)
+Containers:
+  mm:
+    Container ID:   docker://e02e60e254ddeb345c8e0bb83eb925d94a38567984f3eccc8ae8da365fa5a7c2
+    Image:          kserve/modelmesh:v0.9.0
+    Image ID:       docker-pullable://kserve/modelmesh@sha256:cd8cc8e3d1e940254fa87051e62b13052970a606f1feea01a438ed69d3dc8b17
+    Ports:          8033/TCP, 2112/TCP
+    Host Ports:     0/TCP, 0/TCP
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    3
+      Started:      Sun, 07 Jan 2024 13:22:36 +0700
+      Finished:     Sun, 07 Jan 2024 13:25:40 +0700
+    Ready:          False
+    Restart Count:  8
+    Limits:
+      cpu:     3
+      memory:  448Mi
+    Requests:
+      cpu:      1m
+      memory:   1M
+    Liveness:   http-get http://:8089/live delay=90s timeout=5s period=30s #success=1 #failure=2
+    Readiness:  http-get http://:8089/ready delay=5s timeout=1s period=5s #success=1 #failure=3
+    Environment:
+      MM_SERVICE_NAME:             modelmesh-serving
+      MM_SVC_GRPC_PORT:            8033
+      WKUBE_POD_NAME:              modelmesh-serving-triton-2.x-588bfcf567-kbrq4 (v1:metadata.name)
+      WKUBE_POD_IPADDR:             (v1:status.podIP)
+      MM_LOCATION:                  (v1:status.hostIP)
+      KV_STORE:                    etcd:/opt/kserve/mmesh/etcd/etcd_connection
+      MM_METRICS:                  prometheus:port=2112;scheme=https
+      SHUTDOWN_TIMEOUT_MS:         90000
+      INTERNAL_SERVING_GRPC_PORT:  8001
+      INTERNAL_GRPC_PORT:          8085
+      MM_SVC_GRPC_MAX_MSG_SIZE:    16777216
+      MM_KVSTORE_PREFIX:           mm
+      MM_DEFAULT_VMODEL_OWNER:     ksp
+      MM_LABELS:                   mt:vae,mt:vae:1,pv:grpc-v2,pv:v2,rt:triton-2.x
+      MM_TYPE_CONSTRAINTS_PATH:    /etc/watson/mmesh/config/type_constraints
+      MM_DATAPLANE_CONFIG_PATH:    /etc/watson/mmesh/config/dataplane_api_config
+    Mounts:
+      /etc/watson/mmesh/config from tc-config (rw)
+      /opt/kserve/mmesh/etcd from etcd-config (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-bwxwz (ro)
+  triton:
+    Container ID:  docker://733faed2d47dbb102ad4022d71196134fe14fc755de01eb46a324656673d3db8
+    Image:         6666688889/triton-server:0.0.20
+    Image ID:      docker-pullable://6666688889/triton-server@sha256:13caa7c7b6605a91dfef406fa60020008c5c2a1079388218686416194047ce2a
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      /bin/sh
+    Args:
+      -c
+      mkdir -p /models/_triton_models; chmod 777 /models/_triton_models; exec tritonserver "--model-repository=/models/_triton_models" "--model-control-mode=explicit" "--strict-model-config=false" "--strict-readiness=false" "--allow-http=true" "--allow-sagemaker=false" 
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    127
+      Started:      Sun, 07 Jan 2024 13:23:14 +0700
+      Finished:     Sun, 07 Jan 2024 13:23:14 +0700
+    Ready:          False
+    Restart Count:  13
+    Limits:
+      cpu:     5
+      memory:  1Gi
+    Requests:
+      cpu:        1m
+      memory:     1M
+    Liveness:     exec [curl --fail --silent --show-error --max-time 9 http://localhost:8000/v2/health/live] delay=5s timeout=10s period=30s #success=1 #failure=3
+    Environment:  <none>
+    Mounts:
+      /models from models-dir (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-bwxwz (ro)
+  triton-adapter:
+    Container ID:  docker://eeebe7d51d4d7a6ae4dd5b41f5621a3083aa1925ebfc0b92dc1e082deb2d60d3
+    Image:         kserve/modelmesh-runtime-adapter:v0.9.0
+    Image ID:      docker-pullable://kserve/modelmesh-runtime-adapter@sha256:9b9de931dd6481070323abffb1ff38e0aee0fb851ca72adcd1a09d28607612b1
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      /opt/app/triton-adapter
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Sun, 07 Jan 2024 13:24:22 +0700
+      Finished:     Sun, 07 Jan 2024 13:25:22 +0700
+    Ready:          False
+    Restart Count:  11
+    Limits:
+      cpu:     2
+      memory:  512Mi
+    Requests:
+      cpu:     1m
+      memory:  1M
+    Environment:
+      ADAPTER_PORT:             8085
+      RUNTIME_PORT:             8001
+      CONTAINER_MEM_REQ_BYTES:  1000000 (requests.memory)
+      MEM_BUFFER_BYTES:         -134217728
+      LOADTIME_TIMEOUT:         90000
+      USE_EMBEDDED_PULLER:      true
+      RUNTIME_VERSION:          0.0.20
+      LOADING_CONCURRENCY:      2
+    Mounts:
+      /models from models-dir (rw)
+      /storage-config from storage-config (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-bwxwz (ro)
+  rest-proxy:
+    Container ID:   docker://e4164605403b1f6d9ef499d4bdda051e85654f41c2589af92af9ea5a93fc6eb2
+    Image:          kserve/rest-proxy:v0.1.4
+    Image ID:       docker-pullable://kserve/rest-proxy@sha256:42cf014d40d714b1860fba106b17f485cb0a109a7c3430f28e3698ae845843f7
+    Port:           8008/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 07 Jan 2024 12:41:55 +0700
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  512Mi
+    Requests:
+      cpu:     1m
+      memory:  1M
+    Environment:
+      REST_PROXY_LISTEN_PORT:              8008
+      REST_PROXY_GRPC_PORT:                8033
+      REST_PROXY_USE_TLS:                  false
+      REST_PROXY_GRPC_MAX_MSG_SIZE_BYTES:  16777216
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-bwxwz (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  models-dir:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  1536Mi
+  storage-config:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  storage-config
+    Optional:    false
+  tc-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      tc-config
+    Optional:  false
+  etcd-config:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  model-serving-etcd
+    Optional:    false
+  default-token-bwxwz:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-bwxwz
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                    From               Message
+  ----     ------     ----                   ----               -------
+  Normal   Scheduled  44m                    default-scheduler  Successfully assigned modelmesh-serving/modelmesh-serving-triton-2.x-588bfcf567-kbrq4 to minikf
+  Normal   Created    44m                    kubelet            Created container mm
+  Normal   Pulled     44m                    kubelet            Container image "gcr.io/arrikto-public/startup-lock-init@sha256:0fbe996a2f6b380d7c566ba16255ec034faec983c2661da778fe09b3e744ad21" already present on machine
+  Normal   Created    44m                    kubelet            Created container startup-lock-init-container
+  Normal   Started    44m                    kubelet            Started container startup-lock-init-container
+  Normal   Started    44m                    kubelet            Started container mm
+  Normal   Pulled     44m                    kubelet            Container image "kserve/modelmesh-runtime-adapter:v0.9.0" already present on machine
+  Normal   Created    44m                    kubelet            Created container triton-adapter
+  Normal   Created    44m                    kubelet            Created container rest-proxy
+  Normal   Started    44m                    kubelet            Started container triton-adapter
+  Normal   Pulled     44m                    kubelet            Container image "kserve/rest-proxy:v0.1.4" already present on machine
+  Normal   Started    44m                    kubelet            Started container rest-proxy
+  Normal   Started    44m (x2 over 44m)      kubelet            Started container triton
+  Warning  BackOff    44m (x2 over 44m)      kubelet            Back-off restarting failed container
+  Normal   Created    44m (x3 over 44m)      kubelet            Created container triton
+  Normal   Pulled     44m (x3 over 44m)      kubelet            Container image "6666688889/triton-server:0.0.20" already present on machine
+  Normal   Pulled     34m (x4 over 44m)      kubelet            Container image "kserve/modelmesh:v0.9.0" already present on machine
+  Warning  Unhealthy  19m (x222 over 44m)    kubelet            Readiness probe failed: HTTP probe failed with statuscode: 503
+  Warning  BackOff    4m24s (x153 over 42m)  kubelet            Back-off restarting failed container

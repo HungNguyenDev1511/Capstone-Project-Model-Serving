@@ -26,19 +26,35 @@ metadata:
     serving.kserve.io/max-scale: "3"
 spec:
   supportedModelFormats:
-    - name: vae
-      version: "1"
+    - name: keras
+      version: "2" # 2.6.0
       autoSelect: true
+    - name: onnx
+      version: "1" # 1.5.3
+      autoSelect: true
+    - name: pytorch
+      version: "1" # 1.8.0a0+17f8c32
+      autoSelect: true
+    - name: tensorflow
+      version: "1" # 1.15.4
+      autoSelect: true
+    - name: tensorflow
+      version: "2" # 2.3.1
+      autoSelect: true
+    - name: tensorrt
+      version: "7" # 7.2.1
+      autoSelect: true
+
   protocolVersions:
     - grpc-v2
   multiModel: true
-
+  replicas: 1
   grpcEndpoint: "port:8085"
   grpcDataEndpoint: "port:8001"
 
   containers:
     - name: triton
-      image: 6666688889/triton-server:0.0.20
+      image: tritonserver-2:replace
       command: [/bin/sh]
       args:
         - -c

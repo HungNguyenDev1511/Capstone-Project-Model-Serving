@@ -2,15 +2,11 @@ apiVersion: "serving.kserve.io/v1beta1"
 kind: "InferenceService"
 metadata:
   name: "triton-mms"
+  namespace: modelmesh-serving
+  annotations:
+    serving.kserve.io/deploymentMode: ModelMesh
+    serving.kserve.io/secretKey: localMinIO
 spec:
   predictor:
     triton:
-      args:
-      - --log-verbose=1     
-      resources:
-        limits:
-          cpu: "1"
-          memory: 2Gi
-        requests:
-          cpu: "1"
-          memory: 2Gi
+      storageUri: s3://modelmesh-example-models/onnx/
