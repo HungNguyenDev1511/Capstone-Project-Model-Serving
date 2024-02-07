@@ -54,7 +54,7 @@ spec:
 
   containers:
     - name: triton
-      image: tritonserver-2:replace
+      image: nvcr.io/nvidia/tritonserver:23.09-py3
       command: [/bin/sh]
       args:
         - -c
