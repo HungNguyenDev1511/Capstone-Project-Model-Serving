@@ -3,13 +3,13 @@ from PIL import Image
 from plot import plot_bboxes
 from ultralytics import YOLO
 
-IMAGE_PATH = "images/bus.jpg"
+IMAGE_PATH = "images/car_2.jpg"
 DRAWED_PATH = "images/output.jpg"
 MODEL_OUTPUT_PATH = "weights"
 
 
 def main():
-    model = YOLO("yolov8n.pt")
+    model = YOLO("utils/best.pt")
 
     # Get predictions
     results = model(source=IMAGE_PATH)
