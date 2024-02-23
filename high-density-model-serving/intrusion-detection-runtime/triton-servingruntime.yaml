@@ -93,11 +93,6 @@ spec:
         initialDelaySeconds: 5
         periodSeconds: 30
         timeoutSeconds: 10
-  
-  volumeMounts:
-        - mountPath: "/model_repo/yolov8n_car"
-          name: task-pv-storage
-  
   builtInAdapter:
     serverType: triton
     runtimeManagementPort: 8001

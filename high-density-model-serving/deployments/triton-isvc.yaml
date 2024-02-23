@@ -11,6 +11,4 @@ spec:
         name: onnx
       storage:
         key: localMinIO
-        path: onnx/mnist.onnx
-        parameters:
-          bucket: s3://modelmesh-example-models/onnx/
+        path: onnx/1/best.onnx
