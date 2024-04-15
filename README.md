@@ -1,6 +1,6 @@
     # How-to Guide
+![abc](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/e86947c5-5e25-4b0b-917d-2b78275dad5f)
 
-    ![modelmesh-serving](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/blob/master/abc.png)
 ## Prerequisites
 
 ### Install kustomize
