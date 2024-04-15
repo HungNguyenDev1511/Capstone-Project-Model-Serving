@@ -1,6 +1,5 @@
     # How-to Guide
-    ![image](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/a6e2aee5-3e45-48b8-a0a2-aa05de220828)
-
+![image](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/bdd142f6-3576-4c4c-8ad9-3592df1b6b24)
 
 ## Prerequisites
 
