@@ -48,11 +48,14 @@ kubectl get po minio-676b8dcf45-nw2zw -o json | jq -r '.spec.containers[0].env[]
 
 You can see that in my case, `MINIO_ACCESS_KEY` is `AKIAIOSFODNN7EXAMPLE`, and `MINIO_SECRET_KEY` is `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`.
 ![minio-credentials](./images/minio-credentials.png).
+Open browser to access localhost:9000 - that is the endpoint of MINIO
 
+In this project we work with triton so we need to upload the models and config by file config.pbtxt in folder model_repo\yolov8n_car and upload the folder yolov8nx_car in to onnx on MINIO. The structure of folder in onnx folder on MINIO you should do like this 
 
-Run the following command to have a quickstart model
+Run the following command to have a start model
 ```shellk get p
-kubectl apply -f deployments/quickstart.yaml
+kubectl apply -f deployments/triton-isvc.yaml
+kubectl apply -f intrusion-detection-runtime/triton-servingruntime.yaml
 ```
 
 To see whether our service is ready, run the following command
