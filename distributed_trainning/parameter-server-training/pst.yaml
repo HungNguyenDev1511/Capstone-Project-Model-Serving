@@ -1,0 +1,42 @@
+apiVersion: kubeflow.org/v1
+kind: TFJob
+metadata:
+  name: parameter-server-training
+  namespace: distributed-training
+spec:
+  tfReplicaSpecs:
+    PS:
+      replicas: 2
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: tensorflow
+              image: fullstackdatascience/parameter_server_training:0.0.43
+    Worker:
+      replicas: 2
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: tensorflow
+              image: fullstackdatascience/parameter_server_training:0.0.43
+              volumeMounts:
+                - mountPath: /train
+                  name: training
+          volumes:
+            - name: training
+              persistentVolumeClaim:
+                claimName: pst-volume
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pst-volume
+  namespace: distributed-training
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
