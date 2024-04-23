@@ -19,14 +19,14 @@ display.clear_output()
 
 import ultralytics
 
-DIR = "/kaggle/working/datasets/cars/"
+DIR = "distributed_train/datasets/cars/"
 IMAGES = DIR +"images/"
 LABELS = DIR +"labels/"
 
-TRAIN = "/kaggle/input/car-object-detection/data/training_images"
-TEST = "/kaggle/input/car-object-detection/data/testing_images"
+TRAIN = "/distributed_train/data/training_images"
+TEST = "distributed_train/data/testing_images"
 
-df = pd.read_csv("/kaggle/input/car-object-detection/data/train_solution_bounding_boxes (1).csv")
+df = pd.read_csv("distributed_train/data/train_solution_bounding_boxes (1).csv")
 df.head()
 
 #setting dataset
