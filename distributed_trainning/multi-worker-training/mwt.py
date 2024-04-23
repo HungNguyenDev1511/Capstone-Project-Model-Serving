@@ -5,7 +5,7 @@ import constants
 import tensorflow as tf
 from dataset_utils import create_datasets
 from model_utils import build_model
-
+from trainning_yolo import 
 
 # Define a function for decaying the learning rate.
 # You can define any decay function you need.
@@ -36,7 +36,8 @@ def main():
     with strategy.scope():
         # Create train and eval datasets. For distributed training,
         # we don't use the eval dataset for now
-        train_dataset, eval_dataset = create_datasets(buffer_size, batch_size)
+        #train_dataset, eval_dataset = create_datasets(buffer_size, batch_size)
+        #train_dataset, eval_dataset = create_datasets(buffer_size, batch_size)
         # We want to shard our training data across all workers,
         # each of the workers will read the entire dataset and
         # only process the shard assigned to it.
@@ -48,7 +49,7 @@ def main():
         )
         train_dataset = train_dataset.with_options(options)
         # Declare our model
-        model = build_model()
+        model = trainning_yolo.train_model()
 
     # Define some callbacks
     # Printing the learning rate at the end of each epoch.
