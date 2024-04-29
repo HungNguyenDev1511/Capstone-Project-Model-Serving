@@ -9,7 +9,7 @@ input [
   {
     name: "images"
     data_type: TYPE_FP32
-    dims: [ 3, 640, 640 ] # If no batch, pls use [ 1, 640, 640 ]
+    dims: [ 1, 640, 640 ] # If no batch, pls use [ 1, 640, 640 ]
   }
 ]
 output [

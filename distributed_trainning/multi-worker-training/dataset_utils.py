@@ -11,7 +11,7 @@ def scale(image, label):
 
 def create_datasets(buffer_size, batch_size):
     # Load the dataset MNIST from TensorFlow in a supervised format
-    datasets, _ = tfds.load(name="mnist", with_info=True, as_supervised=True)
+    datasets, _ = tfds.load(name="cars196", with_info=True, as_supervised=True)
     mnist_train, mnist_test = datasets["train"], datasets["test"]
 
     # Scale the datasets and make batches. For train_dataset,

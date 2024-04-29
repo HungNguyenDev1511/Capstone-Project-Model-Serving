@@ -140,7 +140,7 @@ def main():
 
     original_image = cv2.imread(image_name)
     image = preprocess(original_image)
-    image = np.random.rand(1,3,800,800)
+    # image = np.random.rand(1,3,800,800)
     request_data = {
         "inputs": [
             {
@@ -152,11 +152,15 @@ def main():
             }
         ]
     }
+    # headers = {
+    #     'Content-Type': 'application/x-www-form-urlencoded',
+    # }
     headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Host": "modelmesh-serving.modelmesh-serving:8033",
+        "Content-Type": "*/*",
     }
     response = requests.post(
-        'http://localhost:8008/v2/models/onnx/infer',
+        'http://localhost:8008/v2/models/yolov8n_car/infer',
         headers=headers,
         data=json.dumps(request_data),
         verify=False
