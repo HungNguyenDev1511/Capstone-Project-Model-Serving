@@ -1,3 +1,1 @@
-tensorflow
-ultralytics==8.0.0
-tensorflow_datasets
+opencv-python

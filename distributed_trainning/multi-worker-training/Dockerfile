@@ -6,4 +6,6 @@ COPY . /app
 
 WORKDIR /app
 
+RUN pip install -r requirement.txt
+
 CMD ["python", "mwt.py"] 

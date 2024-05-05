@@ -31,7 +31,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteMany
-  storageClassName: premium-rwx 
+  storageClassName: standard-rwx
   resources:
     requests:
       storage: 10Gi
