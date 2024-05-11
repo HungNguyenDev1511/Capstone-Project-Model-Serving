@@ -35,7 +35,7 @@ After several minutes, you should see the following output
 
 Port-forward `minio` service so you can access it locally
 ```shell
-kubectl port-forward svc/minio -p 9000:9000 -n modelmesh-serving
+kubectl port-forward svc/minio 9000:9000 -n modelmesh-serving
 ```
 
 Assume that your `minio` pod is `minio-5f894ffd9-v27zp`, use the following commands to obtain `MINIO_ACCESS_KEY` and `MINIO_SECRET_KEY` for signing in `minio` and uploading your objects.
@@ -49,20 +49,34 @@ kubectl get po minio-676b8dcf45-nw2zw -o json | jq -r '.spec.containers[0].env[]
 You can see that in my case, `MINIO_ACCESS_KEY` is `AKIAIOSFODNN7EXAMPLE`, and `MINIO_SECRET_KEY` is `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`.
 ![minio-credentials](./images/minio-credentials.png).
 
+Acess to localhost:9000 to access MINIO upload model to MINIO bucket structure of storage our ONNX model and config pbtxt will like this
+![Screenshot from 2024-05-11 17-01-13](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/adc4b65c-a51c-4e64-9a1a-377f680810ed)
+![Screenshot from 2024-05-11 17-01-19](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/8461cdc0-1fcd-491e-9b24-8d8d9b5bfc58)
 
-Run the following command to have a quickstart model
+
+Run the following command to have a deploy onnx model
 ```shellk get p
-kubectl apply -f deployments/quickstart.yaml
+kubectl apply -f high-density-model-serving/deployments/triton-isvc.yaml
+kubectl apply -f high-density-model-serving/intrusion-detection-runtime/triton-servingruntime.yaml
 ```
 
 To see whether our service is ready, run the following command
 ```shell
 kubectl get isvc
 ```
+You can see that is false
+![Screenshot from 2024-05-11 17-03-59](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/690161fc-1f85-4932-8d59-9d0e12498bed)
+
 , it should take several minutes for our service to be `READY`. If not, please check logs of the container `mm` in the pod corresponding to `mlserver` as follows
 
+kubectl get pods and try to see error 
+![Screenshot from 2024-05-11 17-05-19](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/2f3abcac-7e4f-45b0-9c21-11efc94bf886)
+
+
 ```shell
-kubectl logs modelmesh-serving-mlserver-0.x-68d7dcb75d-5m5lg -c mm
+kubectl describe pod modelmesh-serving-triton-2.x-6c4978d6db-5k59z
+![Screenshot from 2024-05-11 17-05-55](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/05ce3bc4-5982-4b25-b9ef-29b54dd564cd)
+
 ```
 
 To make a prediction, do the following steps:
