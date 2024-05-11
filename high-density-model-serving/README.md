@@ -78,6 +78,7 @@ kubectl describe pod modelmesh-serving-triton-2.x-6c4978d6db-5k59z
 ![Screenshot from 2024-05-11 17-05-55](https://github.com/HungNguyenDev1511/Capstone-Project-Model-Serving/assets/69066161/05ce3bc4-5982-4b25-b9ef-29b54dd564cd)
 
 ```
+just resolve one by one error first
 
 To make a prediction, do the following steps:
 
@@ -91,31 +92,3 @@ To make a prediction, do the following steps:
     ```
 
     **Note:** Don't forget to replace your cookie ;)
-
-## Custom Server
-1. Build the corresponding image
-    ```shell
-    cd intrusion-detection-runtime
-    bash build.sh
-    ```
-
-    **Note:** Please update your docker username properly in the file `build.sh` before doing the above steps.
-
-2. Create a new serving runtime name `vae-0.x`
-    ```shell
-    cd intrusion-detection-runtime
-    kubectl apply -f vae-servingruntime.yaml
-    ```
-
-    **Note:** Similar to the above step, replace your recently built image.
-3. Create a new `isvc` residing in the runtime `vae-0.x`
-    ```shell
-    kubectl apply -f intrusion-detection.yaml
-    ```
-4. Enjoy your newly created service
-    ```shell
-    conda create -n mm python=3.9
-    conda activate mm
-    pip install -r requirements.txt
-    python utils/anomaly/anomaly_client.py
-    ```
