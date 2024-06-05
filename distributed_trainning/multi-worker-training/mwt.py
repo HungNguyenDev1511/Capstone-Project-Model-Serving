@@ -5,6 +5,10 @@ import sys
 
 import cv2
 import numpy
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
 import tensorflow as tf
 import tqdm
 
@@ -16,7 +20,6 @@ from utils.dataset import input_fn, DataLoader
 numpy.random.seed(12345)
 tf.random.set_seed(12345)
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 

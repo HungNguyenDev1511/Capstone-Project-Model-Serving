@@ -1,11 +1,13 @@
-FROM tensorflow/tensorflow:2.15.0
+FROM tensorflow/tensorflow:2.12.0
 
-RUN pip install tensorflow_datasets==4.9.3
+RUN pip install opencv-python
+
+RUN pip install tqdm
+
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
 COPY . /app
 
 WORKDIR /app
 
-RUN pip install -r requirement.txt
-
-CMD ["python", "mwt.py"] 
+CMD ["python", "mwt.py"]
