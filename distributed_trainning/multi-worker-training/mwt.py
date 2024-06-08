@@ -16,7 +16,7 @@ from nets import nn
 from utils import config
 from utils import util
 from utils.dataset import input_fn, DataLoader
-
+import posixpath
 numpy.random.seed(12345)
 tf.random.set_seed(12345)
 
@@ -26,16 +26,23 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 def train():
     strategy = tf.distribute.MultiWorkerMirroredStrategy()
 
-    file_names = []
-    with open(os.path.join(config.data_dir, 'train.txt')) as f:
-        for file_name in f.readlines():
-            image_path = os.path.join(config.data_dir, config.image_dir, file_name.rstrip() + '.jpg')
-            label_path = os.path.join(config.data_dir, config.label_dir, file_name.rstrip() + '.xml')
-            if os.path.exists(image_path) and os.path.exists(label_path):
-                if os.path.exists(os.path.join(config.data_dir, 'TF')):
-                    file_names.append(os.path.join(config.data_dir, 'TF', file_name.rstrip() + '.tf'))
-                else:
-                    file_names.append(file_name.rstrip())
+    # file_names = []
+    # with open(os.path.join(config.data_dir, 'train.txt')) as f:
+    #     for file_name in f.readlines():
+    #         image_path = os.path.join(config.data_dir, config.image_dir, file_name.rstrip() + '.jpg')
+    #         label_path = os.path.join(config.data_dir, config.label_dir, file_name.rstrip() + '.xml')
+    #         if os.path.exists(image_path) and os.path.exists(label_path):
+    #             if os.path.exists(os.path.join(config.data_dir, 'TF')):
+    #                 file_names.append(os.path.join(config.data_dir, 'TF', file_name.rstrip() + '.tf'))
+    #             else:
+    #                 file_names.append(file_name.rstrip())
+    image_path = posixpath.join(config.data_dir, config.image_dir, 'train')
+    label_path = posixpath.join(config.data_dir, config.label_dir, 'train')
+
+    image_files = [os.path.splitext(file_name)[0] for file_name in os.listdir(image_path) if file_name.lower().endswith('.jpg')]
+    label_files = [os.path.splitext(file_name)[0] for file_name in os.listdir(label_path) if file_name.lower().endswith('.txt')]
+
+    file_names = list(set(image_files) & set(label_files))
 
     steps = len(file_names) // config.batch_size
     if os.path.exists(os.path.join(config.data_dir, 'TF')):
@@ -105,16 +112,23 @@ def test():
     def test_fn():
         if not os.path.exists('results'):
             os.makedirs('results')
-        file_names = []
-        with open(os.path.join(config.data_dir, 'test.txt')) as f:
-            for file_name in f.readlines():
-                file_names.append(file_name.rstrip())
+        # file_names = []
+        # with open(os.path.join(config.data_dir, 'test.txt')) as f:
+        #     for file_name in f.readlines():
+        #         file_names.append(file_name.rstrip())
+        image_path = posixpath.join(config.data_dir, config.image_dir, 'valid')
+        label_path = posixpath.join(config.data_dir, config.label_dir, 'valid')
+
+        image_files = [os.path.splitext(file_name)[0] for file_name in os.listdir(image_path) if file_name.lower().endswith('.jpg')]
+        label_files = [os.path.splitext(file_name)[0] for file_name in os.listdir(label_path) if file_name.lower().endswith('.txt')]
+
+        file_names = list(set(image_files) & set(label_files))
 
         model = nn.build_model(training=False)
         model.load_weights(f"weights/model_{config.version}.h5", True)
 
         for file_name in tqdm.tqdm(file_names):
-            image = cv2.imread(os.path.join(config.data_dir, config.image_dir, file_name + '.jpg'))
+            image = cv2.imread(posixpath.join(config.data_dir, config.image_dir, 'valid', file_name + '.jpg'))
             image_np = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             image_np, scale, dw, dh = util.resize(image_np)
@@ -255,7 +269,7 @@ class AnchorGenerator:
     @staticmethod
     def get_boxes():
         boxes = []
-        file_names = [file_name[:-4] for file_name in os.listdir(os.path.join(config.data_dir, config.label_dir))]
+        file_names = [file_name[:-4] for file_name in os.listdir(posixpath.join(config.data_dir, config.label_dir))]
         for file_name in file_names:
             for box in util.load_label(file_name)[0]:
                 boxes.append([box[2] - box[0], box[3] - box[1]])

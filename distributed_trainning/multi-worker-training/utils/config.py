@@ -1,11 +1,12 @@
 import os
 import numpy
-
+import posixpath
 width = [0.50, 0.75, 1.0, 1.25]
 depth = [0.33, 0.67, 1.0, 1.33]
 
 versions = ['s', 'm', 'l', 'x']
-data_dir = os.path.join('..', 'Dataset')
+# data_dir = os.path.join('..', 'Dataset')
+data_dir = posixpath.join('.', 'Dataset')
 
 threshold = 0.3
 max_boxes = 150

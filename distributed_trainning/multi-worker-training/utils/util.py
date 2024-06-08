@@ -1,20 +1,20 @@
 import os
 import xml.etree.ElementTree
-
+import posixpath
 import cv2
 import numpy
 
 from utils import config
 
 
-def load_image(file_name):
-    path = os.path.join(config.data_dir, config.image_dir, file_name + '.jpg')
+def load_image(file_name, split = 'train'):
+    path = posixpath.join(config.data_dir, config.image_dir, split, file_name + '.jpg')
     image = cv2.imread(path)
     return image
 
 def load_label(file_name, split='train'):
     # Construct the new path for the label file
-    path = os.path.join(config.data_dir, config.label_dir, split, file_name + '.txt')
+    path = posixpath.join(config.data_dir, config.label_dir, split, file_name + '.txt')
     
     boxes = []
     
