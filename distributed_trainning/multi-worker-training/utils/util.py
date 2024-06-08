@@ -12,24 +12,26 @@ def load_image(file_name):
     image = cv2.imread(path)
     return image
 
-
-def load_label(file_name):
-    path = os.path.join(config.data_dir, config.label_dir, file_name + '.xml')
-    root = xml.etree.ElementTree.parse(path).getroot()
-
+def load_label(file_name, split='train'):
+    # Construct the new path for the label file
+    path = os.path.join(config.data_dir, config.label_dir, split, file_name + '.txt')
+    
     boxes = []
-    labels = []
-    for element in root.iter('object'):
-        x_min = float(element.find('bndbox').find('xmin').text)
-        y_min = float(element.find('bndbox').find('ymin').text)
-        x_max = float(element.find('bndbox').find('xmax').text)
-        y_max = float(element.find('bndbox').find('ymax').text)
+    
+    # Read the text file line by line
+    with open(path, 'r') as f:
+        for line in f:
+            # Split the line into coordinates
+            _, x_min, y_min, x_max, y_max = line.strip().split()
+            x_min = float(x_min)
+            y_min = float(y_min)
+            x_max = float(x_max)
+            y_max = float(y_max)
 
-        boxes.append([x_min, y_min, x_max, y_max])
-        labels.append(config.class_dict[element.find('name').text])
-    boxes = numpy.asarray(boxes, numpy.float32)
-    labels = numpy.asarray(labels, numpy.int32)
-    return boxes, labels
+            boxes.append([x_min, y_min, x_max, y_max])
+   
+    boxes = numpy.asarray(boxes, numpy.float32)    
+    return boxes
 
 
 def resize(image, boxes=None):
@@ -62,7 +64,7 @@ def random_flip(image, boxes):
     return image, boxes
 
 
-def process_box(boxes, labels):
+def process_box(boxes):
     anchors_mask = [[6, 7, 8], [3, 4, 5], [0, 1, 2]]
     anchors = config.anchors
     box_centers = (boxes[:, 0:2] + boxes[:, 2:4]) / 2
@@ -100,11 +102,11 @@ def process_box(boxes, labels):
         x = int(numpy.floor(box_centers[i, 0] / ratio))
         y = int(numpy.floor(box_centers[i, 1] / ratio))
         k = anchors_mask[feature_map_group].index(idx)
-        c = labels[i]
+        # c = labels[i]
 
         y_true[feature_map_group][y, x, k, :2] = box_centers[i]
         y_true[feature_map_group][y, x, k, 2:4] = box_size[i]
         y_true[feature_map_group][y, x, k, 4] = 1.
-        y_true[feature_map_group][y, x, k, 5 + c] = 1.
+        # y_true[feature_map_group][y, x, k, 5 + c] = 1.
 
     return y_true_1, y_true_2, y_true_3
