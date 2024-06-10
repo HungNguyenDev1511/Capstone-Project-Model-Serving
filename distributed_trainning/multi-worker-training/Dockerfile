@@ -10,4 +10,5 @@ COPY . /app
 
 WORKDIR /app
 
-CMD ["python", "mwt.py"]
+# Run mwt.py with the --train argument
+CMD ["python", "mwt.py", "--train"]

@@ -2,7 +2,7 @@ import os
 import numpy
 import tensorflow as tf
 from tensorflow.keras import utils
-
+import posixpath
 from utils import config, util
 
 
@@ -15,13 +15,13 @@ class Generator(utils.Sequence):
 
     def __getitem__(self, index):
         image = util.load_image(self.file_names[index])
-        boxes, label = util.load_label(self.file_names[index])
+        boxes = util.load_label(self.file_names[index])
         image, boxes = util.resize(image, boxes)
-        image, boxes = util.random_flip(image, boxes)
+        # image, boxes = util.random_flip(image, boxes)
 
         image = image[:, :, ::-1].astype(numpy.float32)
         image = image / 255.0
-        y_true_1, y_true_2, y_true_3 = util.process_box(boxes, label)
+        y_true_1, y_true_2, y_true_3 = util.process_box(boxes)
         return image, y_true_1, y_true_2, y_true_3
 
     def on_epoch_end(self):
