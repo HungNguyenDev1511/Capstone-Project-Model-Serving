@@ -13,7 +13,7 @@ max_boxes = 150
 image_dir = 'images'
 label_dir = 'labels'
 
-num_epochs = 300
+num_epochs = 2
 batch_size = 32
 image_size = 640
 class_dict = {'person': 0, 'bicycle': 1, 'car': 2, 'motorcycle': 3, 'airplane': 4, 'bus': 5, 'train': 6, 'truck': 7,
