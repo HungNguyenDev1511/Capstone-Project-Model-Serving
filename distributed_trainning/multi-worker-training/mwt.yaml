@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: tensorflow
-              image: 6666688889/distributed_training:0.0.11
+              image: 6666688889/distributed_training:0.0.13
               volumeMounts:
                 - mountPath: /train
                   name: training
