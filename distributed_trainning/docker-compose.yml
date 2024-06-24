@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mlflow:
+    build:
+      context: ./mlflow
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-artifacts:/mlflow
+    environment:
+      - MLFLOW_TRACKING_URI=http://0.0.0.0:5000
+      - MLFLOW_ARTIFACT_ROOT=/mlflow
+  
+  train-service:
+    build:
+      context: ./train
+      dockerfile: Dockerfile
+    volumes:
+      - ./train:/app
+    depends_on:
+      - mlflow
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+
+  
+
+volumes:
+  mlflow-artifacts:
