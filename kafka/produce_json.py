@@ -1,7 +1,9 @@
 import argparse
+import io
 import json
 from datetime import datetime
 from time import sleep
+import random
 
 import numpy as np
 from bson import json_util
@@ -23,15 +25,16 @@ parser.add_argument(
     help="Where the bootstrap server is",
 )
 parser.add_argument(
-    "-s",
+    "-c",
     "--schemas_path",
-    default=".",
-    help="Path to the schema",
+    default="./avro_schemas",
+    help="Folder containing all generated avro schemas",
 )
+
 args = parser.parse_args()
 
 # Define some constants
-NUM_DEVICES = 3
+NUM_IMAGE = 1
 
 
 def create_topic(admin, topic_name):
@@ -63,28 +66,39 @@ def create_streams(servers, schemas_path):
             pass
 
     while True:
-        record = {}
+        record = {
+            "schema": {
+            "type": "struct",
+                "fields": [
+                {
+                    "type": "int64",
+                    "optional": False,
+                    "field": "image_id"
+                },
+                {
+                    "type": "string",
+                    "optional": False,
+                    "field": "image_path"
+                },
+                ]
+            }
+        }
+        record["payload"] = {}
+
+        record["payload"]["image_id"] = NUM_IMAGE+1
+        record["payload"]["image_path"] = '/home/hungnguyen/Capstone-Project-Model-Serving/distributed_trainning/train/Dataset/images/train/vid_4_600.jpg'
         # Make event one more year recent to simulate fresher data
-        record["created"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        record["device_id"] = np.random.randint(low=0, high=NUM_DEVICES)
 
-        # Read columns from schema
-        schema_path = f"{schemas_path}/schema.avsc"
-        with open(schema_path, "r") as f:
-            parsed_schema = json.loads(f.read())
+        # Get topic name for this taxo
+        topic_name = f'image_0'
 
-        for field in parsed_schema["fields"]:
-            if field["name"] not in ["created", "device_id"]:
-                record[field["name"]] = np.random.rand()
-
-        # Get topic name for this device
-        topic_name = f'device_{record["device_id"]}'
-
-        # Create a new topic for this device id if not exists
+        # Create a new topic for this taxi id if not exists
         create_topic(admin, topic_name=topic_name)
 
         # Send messages to this topic
-        producer.send(topic_name, json.dumps(record).encode())
+        producer.send(
+            topic_name, json.dumps(record, default=json_util.default).encode("utf-8")
+        )
         print(record)
         sleep(2)
 
@@ -106,11 +120,11 @@ if __name__ == "__main__":
 
     # Tear down all previous streams
     print("Tearing down all existing topics!")
-    for device_id in range(NUM_DEVICES):
+    for image_id in range(NUM_IMAGE):
         try:
-            teardown_stream(f"device_{device_id}", [servers])
+            teardown_stream(f"image_{image_id}", [servers])
         except Exception as e:
-            print(f"Topic device_{device_id} does not exist. Skipping...!")
+            print(f"Topic image_{image_id} does not exist. Skipping...!")
 
     if mode == "setup":
         schemas_path = parsed_args["schemas_path"]

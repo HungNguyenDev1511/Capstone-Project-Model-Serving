@@ -1,34 +1,0 @@
-
-?
-!
-__dummy"
-__dummy_idJ
-quickstart
-šÕ¿«°ò±zšÕ¿«°ò±z
-=
-
-driver"	driver_idJ
-quickstart
-šÕ¿«À·µzšÕ¿«À·µz1"$c80ac181-4ab0-418d-8b8a-5dabe6103d29*ÿÓÀ«ÁÁÇ2•
-ô
-driver_hourly_stats
-quickstartdriver"
-	conv_rate"
-acc_rate"(
-avg_daily_trips"Average daily trips*
-teamdriver_performance2€£:Îevent_timestamp*createdZ_]/home/quandv/Documents/fsds/m3/feature-store/driver_fs/feature_repo/data/driver_stats.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢driver_hourly_stats_source@b
-	driver_id
-ØÒÀ«°¥á¸ØÒÀ«°¥á¸:f
-F
-driver_activity_v1
-quickstart$
-driver_hourly_stats
-	conv_rate
-ÿÓÀ«Ù¹ÇÿÓÀ«Ù¹ÇR¯
-¬
-,feast.infra.online_stores.sqlite.SqliteTable"|
-Z/home/quandv/Documents/fsds/m3/feature-store/feature_repos/quickstart/data/online_store.dbquickstart_driver_hourly_statsbÛevent_timestamp*createdZ_]/home/quandv/Documents/fsds/m3/feature-store/driver_fs/feature_repo/data/driver_stats.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢driver_hourly_stats_sourceª
-quickstartz1
-	driver_fs$21f11dd7-de54-45e3-9e91-ea17e0c27443z2
-
-quickstart$44408620-560d-40bc-91b0-a19f133a0391
