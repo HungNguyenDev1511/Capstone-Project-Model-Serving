@@ -1,6 +1,7 @@
 import argparse
 import io
 import json
+import os
 from datetime import datetime
 from time import sleep
 import random
@@ -30,6 +31,12 @@ parser.add_argument(
     default="./avro_schemas",
     help="Folder containing all generated avro schemas",
 )
+parser.add_argument(
+    "-i",
+    "--image_dir",
+    default="./images",
+    help="Directory containing the images to send",
+)
 
 args = parser.parse_args()
 
@@ -49,7 +56,7 @@ def create_topic(admin, topic_name):
         pass
 
 
-def create_streams(servers, schemas_path):
+def create_streams(servers, schemas_path, image_dir):
     producer = None
     admin = None
     for _ in range(10):
@@ -65,34 +72,42 @@ def create_streams(servers, schemas_path):
             sleep(10)
             pass
 
+    image_files = [os.path.join(image_dir, f) for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+    image_index = 0
+
     while True:
+        image_file = image_files[image_index]
+        image_index = (image_index + 1) % len(image_files)
+
+        with open(image_file, 'rb') as img_file:
+            image_data = img_file.read()
+
         record = {
             "schema": {
-            "type": "struct",
+                "type": "struct",
                 "fields": [
-                {
-                    "type": "int64",
-                    "optional": False,
-                    "field": "image_id"
-                },
-                {
-                    "type": "string",
-                    "optional": False,
-                    "field": "image_path"
-                },
+                    {
+                        "type": "int64",
+                        "optional": False,
+                        "field": "image_id"
+                    },
+                    {
+                        "type": "bytes",
+                        "optional": False,
+                        "field": "image_data"
+                    },
                 ]
             }
         }
         record["payload"] = {}
 
-        record["payload"]["image_id"] = NUM_IMAGE+1
-        record["payload"]["image_path"] = '/home/hungnguyen/Capstone-Project-Model-Serving/distributed_trainning/train/Dataset/images/train/vid_4_600.jpg'
-        # Make event one more year recent to simulate fresher data
+        record["payload"]["image_id"] = NUM_IMAGE + 1
+        record["payload"]["image_data"] = image_data
 
-        # Get topic name for this taxo
+        # Get topic name for this image
         topic_name = f'image_0'
 
-        # Create a new topic for this taxi id if not exists
+        # Create a new topic for this image if not exists
         create_topic(admin, topic_name=topic_name)
 
         # Send messages to this topic
@@ -117,6 +132,7 @@ if __name__ == "__main__":
     parsed_args = vars(args)
     mode = parsed_args["mode"]
     servers = parsed_args["bootstrap_servers"]
+    image_dir = parsed_args["image_dir"]
 
     # Tear down all previous streams
     print("Tearing down all existing topics!")
@@ -128,4 +144,4 @@ if __name__ == "__main__":
 
     if mode == "setup":
         schemas_path = parsed_args["schemas_path"]
-        create_streams([servers], schemas_path)
+        create_streams([servers], schemas_path, image_dir)
