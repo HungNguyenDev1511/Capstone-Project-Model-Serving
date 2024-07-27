@@ -1,4 +1,4 @@
-
+services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     # hostname: zookeeper
@@ -91,7 +91,7 @@
       CONNECT_PLUGIN_PATH: '/usr/share/java,/etc/kafka-connect/jars'
 
     volumes:
-      - /home/hungnguyen/Caption-Project/stream_processing/data_ingestion/kafka_connect/jars:/etc/kafka-connect/jars
+      - /home/hungnguyen/Capstone-Project-Model-Serving/kafka/kafka_connector/jars
 
   # Confluent control center to manage Kafka
   control-center:
@@ -139,8 +139,6 @@
       - POSTGRES_DB=k6
       - POSTGRES_USER=k6
       - POSTGRES_PASSWORD=k6
-    volumes:
-      - pgdata:/var/lib/postgresql/data
 
   # Simulation of sending messages to Kafka topics
   kafka_producer:
@@ -153,3 +151,5 @@
       timescaledb:
         condition: service_healthy
     container_name: flink-kafka-producer
+    volumes:
+      - /home/hungnguyen/Capstone-Project-Model-Serving/kafka/Dataset/images/train:/images
